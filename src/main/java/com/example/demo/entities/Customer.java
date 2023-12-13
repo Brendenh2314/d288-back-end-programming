@@ -1,15 +1,24 @@
 package com.example.demo.entities;
 
-import javax.persistence.*;
-import java.util.Date;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "customers")
+@Getter
+@Setter
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
     private Long id;
 
     @Column(name = "first_name")
@@ -25,13 +34,13 @@ public class Customer {
 
     private String phone;
 
+    @CreationTimestamp
     @Column(name = "create_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+    private LocalDateTime createDate;
 
+    @UpdateTimestamp
     @Column(name = "last_update")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     @ManyToOne
     @JoinColumn(name = "division_id")
@@ -44,9 +53,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Cart> carts;
 
-
     public Customer() {
-
     }
 
 }

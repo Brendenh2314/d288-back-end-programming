@@ -3,14 +3,19 @@ package com.example.demo.entities;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "carts")
+@Getter
+@Setter
 public class Cart {
 
     @Id
@@ -33,11 +38,11 @@ public class Cart {
 
     @CreationTimestamp
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -55,11 +60,5 @@ public class Cart {
             cartItem.setCart(this);
         }
     }
-
-
-    public Cart() {
-
-    }
-
 
 }

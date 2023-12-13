@@ -1,8 +1,11 @@
 package com.example.demo.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -11,6 +14,7 @@ public class Vacation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vacation_id")
     private Long id;
 
     @Column(name = "vacation_title")
@@ -25,20 +29,18 @@ public class Vacation {
     @Column(name = "image_URL")
     private String imageURL;
 
+    @CreationTimestamp
     @Column(name = "create_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createDate;
+    private LocalDateTime createDate;
 
+    @UpdateTimestamp
     @Column(name = "last_update")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     @OneToMany(mappedBy = "vacation", cascade = CascadeType.ALL)
     private Set<Excursion> excursions;
 
-
     public Vacation() {
-
     }
 
 }

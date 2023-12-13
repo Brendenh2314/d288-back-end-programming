@@ -13,11 +13,11 @@ public class StatusType {
         PENDING, ORDERED, CANCELED
     }
 
+    public enum CustomerStatus {
+        // Define your customer statuses here, e.g., ACTIVE, INACTIVE, PENDING
+    }
+
     public StatusType(CartStatus cartStatus) {
         this.cartStatus = cartStatus;
     }
-
-    public class CustomerStatus {
-    }
 }
-
