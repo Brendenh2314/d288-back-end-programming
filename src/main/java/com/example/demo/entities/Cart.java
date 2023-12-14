@@ -1,16 +1,15 @@
 package com.example.demo.entities;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "carts")
@@ -27,37 +26,37 @@ public class Cart {
     private String orderTrackingNumber;
 
     @Column(name = "package_price")
-    private BigDecimal packagePrice;
+    private BigDecimal package_price;
 
     @Column(name = "party_size")
-    private int partySize;
+    private int party_size;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private StatusType.CartStatus status = StatusType.CartStatus.PENDING;
+    private StatusType.CartStatus status = StatusType.CartStatus.pending;
 
     @CreationTimestamp
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    private LocalDateTime lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private Set<CartItem> cartItems = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    private Set<CartItem> cartItems;
 
-    public void addItem(CartItem cartItem) {
-        if (cartItem != null) {
+    public void add(CartItem item) {
+        if (item != null) {
             if (cartItems == null) {
                 cartItems = new HashSet<>();
             }
-            cartItems.add(cartItem);
-            cartItem.setCart(this);
+            cartItems.add(item);
+            item.setCart(this);
         }
     }
 

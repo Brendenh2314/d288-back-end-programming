@@ -1,15 +1,19 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "vacations")
+@Getter
+@Setter
 public class Vacation {
 
     @Id
@@ -18,29 +22,28 @@ public class Vacation {
     private Long id;
 
     @Column(name = "vacation_title")
-    private String vacationTitle;
+    private String vacation_title;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "travel_price")
-    private BigDecimal travelPrice;
+    @Column(name = "travel_fare_price")
+    private BigDecimal travel_price;
 
-    @Column(name = "image_URL")
-    private String imageURL;
+    @Column(name = "image_url")
+    private String image_URL;
 
     @CreationTimestamp
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    private LocalDateTime lastUpdate;
+    private Date last_update;
 
     @OneToMany(mappedBy = "vacation", cascade = CascadeType.ALL)
     private Set<Excursion> excursions;
 
-    public Vacation() {
-    }
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vacation")
+    private Set<CartItem> cartItems;
 }

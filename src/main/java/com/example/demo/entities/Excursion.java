@@ -1,15 +1,14 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "excursions")
@@ -23,30 +22,28 @@ public class Excursion {
     private Long id;
 
     @Column(name = "excursion_title")
-    private String excursionTitle;
+    private String excursion_title;
 
     @Column(name = "excursion_price")
-    private BigDecimal excursionPrice;
+    private BigDecimal excursion_price;
 
-    @Column(name = "image_URL")
-    private String imageURL;
+    @Column(name = "image_url")
+    private String image_URL;
 
     @CreationTimestamp
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    private LocalDateTime lastUpdate;
+    private Date last_update;
 
-    @ManyToOne
-    @JoinColumn(name = "vacation_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="vacation_id")
     private Vacation vacation;
 
-    @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL)
-    private Set<CartItem> cartItems;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "excursions")
+    private Set<CartItem> cart_item;
 
-    public Excursion() {
-    }
 
 }

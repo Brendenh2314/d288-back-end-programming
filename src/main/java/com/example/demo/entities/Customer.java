@@ -1,14 +1,14 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "customers")
@@ -21,39 +21,35 @@ public class Customer {
     @Column(name = "customer_id")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "customer_first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "customer_last_name")
     private String lastName;
 
+    @Column(name = "address")
     private String address;
 
     @Column(name = "postal_code")
-    private String postalCode;
+    private String postal_code;
 
+    @Column(name = "phone")
     private String phone;
 
     @CreationTimestamp
     @Column(name = "create_date")
-    private LocalDateTime createDate;
+    private Date create_date;
 
     @UpdateTimestamp
     @Column(name = "last_update")
-    private LocalDateTime lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "division_id")
-    private Division division;
+    private Division divisions;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private StatusType.CustomerStatus status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private Set<Cart> carts = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Cart> carts;
-
-    public Customer() {
-    }
 
 }
