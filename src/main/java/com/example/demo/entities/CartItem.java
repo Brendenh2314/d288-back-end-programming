@@ -29,6 +29,7 @@ public class CartItem {
     @JoinColumn(name = "cart_item_id"),
             inverseJoinColumns = @JoinColumn(name ="excursion_id"))
     Set<Excursion> excursions;
+
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;

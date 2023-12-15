@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class StatusType {
 
+    public static CartStatus ordered;
     private CartStatus cartStatus;
 
     public enum CartStatus {
