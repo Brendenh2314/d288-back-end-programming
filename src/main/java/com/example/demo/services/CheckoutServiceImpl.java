@@ -30,31 +30,37 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
+try {
+    Cart cart = purchase.getCart();
 
-            Cart cart = purchase.getCart();
+    // Generate order tracking number and set it
+    String orderTrackingNumber = generateOrderTrackingNumber();
+    cart.setOrderTrackingNumber(orderTrackingNumber);
 
-            // Generate order tracking number and set it
-            String orderTrackingNumber = generateOrderTrackingNumber();
-            cart.setOrderTrackingNumber(orderTrackingNumber);
+    // Populate cart with cart items
+    Set<CartItem> cartItems = purchase.getCartItems();
+    if (cartItems == null || cartItems.isEmpty()) {
+        throw new Exception("Check cart items, cart items can not empty");
+    }
+    cartItems.forEach(item -> cart.add(item));
 
-            // Populate cart with cart items
-            Set<CartItem> cartItems=purchase.getCartItems();
-            cartItems.forEach(item->cart.add(item));
+    //Set status type
+    cart.setStatus(ordered);
 
-            //Set status type
-            cart.setStatus(ordered);
-
-            // Set the customer for the cart
-            Customer customer=purchase.getCustomer();
-            customer.getCarts().add(cart);
+    // Set the customer for the cart
+    Customer customer = purchase.getCustomer();
+    customer.getCarts().add(cart);
 
 
-            // Save customer and cart information to the database
-            customerRepository.save(customer);
-            cartRepository.save(cart);
+    // Save customer and cart information to the database
+    customerRepository.save(customer);
+    cartRepository.save(cart);
 
-            // Return a response with the order tracking number
-            return new PurchaseResponse(orderTrackingNumber);
+    // Return a response with the order tracking number
+    return new PurchaseResponse(orderTrackingNumber);
+}catch(Exception e) {
+    return new PurchaseResponse(e.getMessage());
+}
     }
 
     private String generateOrderTrackingNumber() {
